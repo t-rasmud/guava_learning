@@ -25,6 +25,8 @@ import java.util.Set;
 import java.util.SortedSet;
 import javax.annotation.Nullable;
 
+import org.checkerframework.checker.nonempty.qual.PolyNonEmpty;
+
 /**
  * A {@code SetMultimap} whose set of values for a given key are kept sorted;
  * that is, they comprise a {@link SortedSet}. It cannot hold duplicate
@@ -63,7 +65,7 @@ public interface SortedSetMultimap<K, V> extends SetMultimap<K, V> {
    * {@link java.util.Collection} specified in the {@link Multimap} interface.
    */
   @Override
-  SortedSet<V> get(@Nullable K key);
+  @PolyNonEmpty SortedSet<V> get(@PolyNonEmpty SortedSetMultimap<K, V> this, @Nullable K key);
 
   /**
    * Removes all values associated with a given key.
@@ -74,7 +76,7 @@ public interface SortedSetMultimap<K, V> extends SetMultimap<K, V> {
    */
   @CanIgnoreReturnValue
   @Override
-  SortedSet<V> removeAll(@Nullable Object key);
+  @PolyNonEmpty SortedSet<V> removeAll(@PolyNonEmpty SortedSetMultimap<K, V> this, @Nullable Object key);
 
   /**
    * Stores a collection of values with the same key, replacing any existing
@@ -88,7 +90,7 @@ public interface SortedSetMultimap<K, V> extends SetMultimap<K, V> {
    */
   @CanIgnoreReturnValue
   @Override
-  SortedSet<V> replaceValues(K key, Iterable<? extends V> values);
+  @PolyNonEmpty SortedSet<V> replaceValues(@PolyNonEmpty SortedSetMultimap<K, V> this, K key, Iterable<? extends V> values);
 
   /**
    * Returns a map view that associates each key with the corresponding values
@@ -107,11 +109,11 @@ public interface SortedSetMultimap<K, V> extends SetMultimap<K, V> {
    * {@link Multimaps#asMap(SortedSetMultimap)} instead.
    */
   @Override
-  Map<K, Collection<V>> asMap();
+  @PolyNonEmpty Map<K, Collection<V>> asMap(@PolyNonEmpty SortedSetMultimap<K, V> this);
 
   /**
    * Returns the comparator that orders the multimap values, with {@code null}
    * indicating that natural ordering is used.
    */
-  Comparator<? super V> valueComparator();
+  Comparator<? super V> valueComparator(@PolyNonEmpty SortedSetMultimap<K, V> this);
 }

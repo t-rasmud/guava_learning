@@ -70,6 +70,8 @@ import java.util.function.Consumer;
 import java.util.stream.Collector;
 import javax.annotation.Nullable;
 
+import org.checkerframework.checker.nonempty.qual.PolyNonEmpty;
+
 /**
  * Static utility methods pertaining to {@link Map} instances (including instances of
  * {@link SortedMap}, {@link BiMap}, etc.). Also see this class's counterparts
@@ -1712,8 +1714,8 @@ public final class Maps {
    * be fast. To avoid lazy evaluation when the returned map doesn't need to be
    * a view, copy the returned map into a new map of your choosing.
    */
-  public static <K, V1, V2> Map<K, V2> transformValues(
-      Map<K, V1> fromMap, Function<? super V1, V2> function) {
+  public static <K, V1, V2> @PolyNonEmpty Map<K, V2> transformValues(
+      @PolyNonEmpty Map<K, V1> fromMap, Function<? super V1, V2> function) {
     return transformEntries(fromMap, asEntryTransformer(function));
   }
 

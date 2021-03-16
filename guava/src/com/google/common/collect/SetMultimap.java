@@ -23,6 +23,8 @@ import java.util.Map;
 import java.util.Set;
 import javax.annotation.Nullable;
 
+import org.checkerframework.checker.nonempty.qual.PolyNonEmpty;
+
 /**
  * A {@code Multimap} that cannot hold duplicate key-value pairs. Adding a
  * key-value pair that's already in the multimap has no effect. See the {@link
@@ -60,7 +62,7 @@ public interface SetMultimap<K, V> extends Multimap<K, V> {
    * specified in the {@link Multimap} interface.
    */
   @Override
-  Set<V> get(@Nullable K key);
+  @PolyNonEmpty Set<V> get(@PolyNonEmpty SetMultimap<K,V> this, @Nullable K key);
 
   /**
    * {@inheritDoc}
@@ -71,7 +73,7 @@ public interface SetMultimap<K, V> extends Multimap<K, V> {
    */
   @CanIgnoreReturnValue
   @Override
-  Set<V> removeAll(@Nullable Object key);
+  @PolyNonEmpty Set<V> removeAll(@PolyNonEmpty SetMultimap<K,V> this, @Nullable Object key);
 
   /**
    * {@inheritDoc}
@@ -84,7 +86,7 @@ public interface SetMultimap<K, V> extends Multimap<K, V> {
    */
   @CanIgnoreReturnValue
   @Override
-  Set<V> replaceValues(K key, Iterable<? extends V> values);
+  @PolyNonEmpty Set<V> replaceValues(@PolyNonEmpty SetMultimap<K,V> this, K key, Iterable<? extends V> values);
 
   /**
    * {@inheritDoc}
@@ -94,7 +96,7 @@ public interface SetMultimap<K, V> extends Multimap<K, V> {
    * specified in the {@link Multimap} interface.
    */
   @Override
-  Set<Map.Entry<K, V>> entries();
+  @PolyNonEmpty Set<Map.Entry<K, V>> entries(@PolyNonEmpty SetMultimap<K,V> this);
 
   /**
    * {@inheritDoc}

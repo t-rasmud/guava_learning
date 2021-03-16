@@ -25,6 +25,8 @@ import java.util.Map;
 import java.util.Set;
 import javax.annotation.Nullable;
 
+import org.checkerframework.checker.nonempty.qual.PolyNonEmpty;
+
 /**
  * A collection that associates an ordered pair of keys, called a row key and a
  * column key, with a single value. A table may be sparse, with only a small
@@ -66,7 +68,7 @@ public interface Table<R, C, V> {
    * @param rowKey key of row to search for
    * @param columnKey key of column to search for
    */
-  boolean contains(
+  boolean contains(@PolyNonEmpty Table<R, C, V> this,
       @Nullable @CompatibleWith("R") Object rowKey,
       @Nullable @CompatibleWith("C") Object columnKey);
 
@@ -75,21 +77,21 @@ public interface Table<R, C, V> {
    *
    * @param rowKey key of row to search for
    */
-  boolean containsRow(@Nullable @CompatibleWith("R") Object rowKey);
+  boolean containsRow(@PolyNonEmpty Table<R, C, V> this, @Nullable @CompatibleWith("R") Object rowKey);
 
   /**
    * Returns {@code true} if the table contains a mapping with the specified column.
    *
    * @param columnKey key of column to search for
    */
-  boolean containsColumn(@Nullable @CompatibleWith("C") Object columnKey);
+  boolean containsColumn(@PolyNonEmpty Table<R, C, V> this, @Nullable @CompatibleWith("C") Object columnKey);
 
   /**
    * Returns {@code true} if the table contains a mapping with the specified value.
    *
    * @param value value to search for
    */
-  boolean containsValue(@Nullable @CompatibleWith("V") Object value);
+  boolean containsValue(@PolyNonEmpty Table<R, C, V> this, @Nullable @CompatibleWith("V") Object value);
 
   /**
    * Returns the value corresponding to the given row and column keys, or {@code null} if no such
@@ -98,36 +100,36 @@ public interface Table<R, C, V> {
    * @param rowKey key of row to search for
    * @param columnKey key of column to search for
    */
-  V get(
+  V get(@PolyNonEmpty Table<R, C, V> this,
       @Nullable @CompatibleWith("R") Object rowKey,
       @Nullable @CompatibleWith("C") Object columnKey);
 
   /** Returns {@code true} if the table contains no mappings. */
-  boolean isEmpty();
+  boolean isEmpty(@PolyNonEmpty Table<R, C, V> this);
 
   /**
    * Returns the number of row key / column key / value mappings in the table.
    */
-  int size();
+  int size(@PolyNonEmpty Table<R, C, V> this);
 
   /**
    * Compares the specified object with this table for equality. Two tables are
    * equal when their cell views, as returned by {@link #cellSet}, are equal.
    */
   @Override
-  boolean equals(@Nullable Object obj);
+  boolean equals(@PolyNonEmpty Table<R, C, V> this, @Nullable Object obj);
 
   /**
    * Returns the hash code for this table. The hash code of a table is defined
    * as the hash code of its cell view, as returned by {@link #cellSet}.
    */
   @Override
-  int hashCode();
+  int hashCode(@PolyNonEmpty Table<R, C, V> this);
 
   // Mutators
 
   /** Removes all mappings from the table. */
-  void clear();
+  void clear(@PolyNonEmpty Table<R, C, V> this);
 
   /**
    * Associates the specified value with the specified keys. If the table
@@ -142,7 +144,7 @@ public interface Table<R, C, V> {
    */
   @CanIgnoreReturnValue
   @Nullable
-  V put(R rowKey, C columnKey, V value);
+  V put(@PolyNonEmpty Table<R, C, V> this, R rowKey, C columnKey, V value);
 
   /**
    * Copies all mappings from the specified table to this table. The effect is
@@ -151,7 +153,7 @@ public interface Table<R, C, V> {
    *
    * @param table the table to add to this table
    */
-  void putAll(Table<? extends R, ? extends C, ? extends V> table);
+  void putAll(@PolyNonEmpty Table<R, C, V> this, Table<? extends R, ? extends C, ? extends V> table);
 
   /**
    * Removes the mapping, if any, associated with the given keys.
@@ -162,7 +164,7 @@ public interface Table<R, C, V> {
    */
   @CanIgnoreReturnValue
   @Nullable
-  V remove(
+  V remove(@PolyNonEmpty Table<R, C, V> this,
       @Nullable @CompatibleWith("R") Object rowKey,
       @Nullable @CompatibleWith("C") Object columnKey);
 
@@ -180,7 +182,7 @@ public interface Table<R, C, V> {
    * @param rowKey key of row to search for in the table
    * @return the corresponding map from column keys to values
    */
-  Map<C, V> row(R rowKey);
+  @PolyNonEmpty Map<C, V> row(@PolyNonEmpty Table<R, C, V> this, R rowKey);
 
   /**
    * Returns a view of all mappings that have the given column key. For each row
@@ -194,7 +196,7 @@ public interface Table<R, C, V> {
    * @param columnKey key of column to search for in the table
    * @return the corresponding map from row keys to values
    */
-  Map<R, V> column(C columnKey);
+  @PolyNonEmpty Map<R, V> column(@PolyNonEmpty Table<R, C, V> this, C columnKey);
 
   /**
    * Returns a set of all row key / column key / value triplets. Changes to the
@@ -204,7 +206,7 @@ public interface Table<R, C, V> {
    * @return set of table cells consisting of row key / column key / value
    *     triplets
    */
-  Set<Cell<R, C, V>> cellSet();
+  @PolyNonEmpty Set<Cell<R, C, V>> cellSet(@PolyNonEmpty Table<R, C, V> this);
 
   /**
    * Returns a set of row keys that have one or more values in the table.
@@ -212,7 +214,7 @@ public interface Table<R, C, V> {
    *
    * @return set of row keys
    */
-  Set<R> rowKeySet();
+  @PolyNonEmpty Set<R> rowKeySet(@PolyNonEmpty Table<R, C, V> this);
 
   /**
    * Returns a set of column keys that have one or more values in the table.
@@ -220,7 +222,7 @@ public interface Table<R, C, V> {
    *
    * @return set of column keys
    */
-  Set<C> columnKeySet();
+  @PolyNonEmpty Set<C> columnKeySet(@PolyNonEmpty Table<R, C, V> this);
 
   /**
    * Returns a collection of all values, which may contain duplicates. Changes
@@ -229,7 +231,7 @@ public interface Table<R, C, V> {
    *
    * @return collection of values
    */
-  Collection<V> values();
+  @PolyNonEmpty Collection<V> values(@PolyNonEmpty Table<R, C, V> this);
 
   /**
    * Returns a view that associates each row key with the corresponding map from
@@ -244,7 +246,7 @@ public interface Table<R, C, V> {
    * @return a map view from each row key to a secondary map from column keys to
    *     values
    */
-  Map<R, Map<C, V>> rowMap();
+  @PolyNonEmpty Map<R, Map<C, V>> rowMap(@PolyNonEmpty Table<R, C, V> this);
 
   /**
    * Returns a view that associates each column key with the corresponding map
@@ -259,7 +261,7 @@ public interface Table<R, C, V> {
    * @return a map view from each column key to a secondary map from row keys to
    *     values
    */
-  Map<C, Map<R, V>> columnMap();
+  @PolyNonEmpty Map<C, Map<R, V>> columnMap(@PolyNonEmpty Table<R, C, V> this);
 
   /**
    * Row key / column key / value triplet corresponding to a mapping in a table.

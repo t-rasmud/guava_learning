@@ -18,6 +18,8 @@ import com.google.common.annotations.GwtCompatible;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import javax.annotation.Nullable;
 
+import org.checkerframework.checker.nonempty.qual.PolyNonEmpty;
+
 /**
  * Static convenience methods that help a method or constructor check whether it was invoked
  * correctly (that is, whether its <i>preconditions</i> were met).
@@ -782,7 +784,7 @@ public final class Preconditions {
    * @see Verify#verifyNotNull Verify.verifyNotNull()
    */
   @CanIgnoreReturnValue
-  public static <T> T checkNotNull(T reference) {
+  public static <@PolyNonEmpty T> T checkNotNull(T reference) {
     if (reference == null) {
       throw new NullPointerException();
     }

@@ -22,6 +22,8 @@ import java.util.Map;
 import java.util.Set;
 import javax.annotation.Nullable;
 
+import org.checkerframework.checker.nonempty.qual.PolyNonEmpty;
+
 /**
  * A bimap (or "bidirectional map") is a map that preserves the uniqueness of
  * its values as well as that of its keys. This constraint enables bimaps to
@@ -49,7 +51,7 @@ public interface BiMap<K, V> extends Map<K, V> {
   @CanIgnoreReturnValue
   @Override
   @Nullable
-  V put(@Nullable K key, @Nullable V value);
+  V put(@PolyNonEmpty BiMap<K, V> this, @Nullable K key, @Nullable V value);
 
   /**
    * An alternate form of {@code put} that silently removes any existing entry
@@ -70,7 +72,7 @@ public interface BiMap<K, V> extends Map<K, V> {
    */
   @CanIgnoreReturnValue
   @Nullable
-  V forcePut(@Nullable K key, @Nullable V value);
+  V forcePut(@PolyNonEmpty BiMap<K, V> this, @Nullable K key, @Nullable V value);
 
   // Bulk Operations
 
@@ -85,7 +87,7 @@ public interface BiMap<K, V> extends Map<K, V> {
    *     bimap before the exception was thrown.
    */
   @Override
-  void putAll(Map<? extends K, ? extends V> map);
+  void putAll(@PolyNonEmpty BiMap<K, V> this, Map<? extends K, ? extends V> map);
 
   // Views
 
@@ -97,7 +99,7 @@ public interface BiMap<K, V> extends Map<K, V> {
    * interface.
    */
   @Override
-  Set<V> values();
+  @PolyNonEmpty Set<V> values(@PolyNonEmpty BiMap<K, V> this);
 
   /**
    * Returns the inverse view of this bimap, which maps each of this bimap's
@@ -109,5 +111,5 @@ public interface BiMap<K, V> extends Map<K, V> {
    *
    * @return the inverse view of this bimap
    */
-  BiMap<V, K> inverse();
+  @PolyNonEmpty BiMap<V, K> inverse(@PolyNonEmpty BiMap<K, V> this);
 }

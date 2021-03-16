@@ -32,6 +32,8 @@ import java.util.function.Consumer;
 import java.util.function.ObjIntConsumer;
 import javax.annotation.Nullable;
 
+import org.checkerframework.checker.nonempty.qual.PolyNonEmpty;
+
 /**
  * A collection that supports order-independent equality, like {@link Set}, but
  * may have duplicate elements. A multiset is also sometimes called a
@@ -117,7 +119,7 @@ public interface Multiset<E> extends Collection<E> {
    * @return the number of occurrences of the element in this multiset; possibly zero but never
    *     negative
    */
-  int count(@Nullable @CompatibleWith("E") Object element);
+  int count(@PolyNonEmpty Multiset<E> this, @Nullable @CompatibleWith("E") Object element);
 
   // Bulk Operations
 
@@ -141,7 +143,7 @@ public interface Multiset<E> extends Collection<E> {
    *     occurrences} is zero, the implementation may opt to return normally.
    */
   @CanIgnoreReturnValue
-  int add(@Nullable E element, int occurrences);
+  int add(@PolyNonEmpty Multiset<E> this, @Nullable E element, int occurrences);
 
   /**
    * Removes a number of occurrences of the specified element from this multiset. If the multiset
@@ -156,7 +158,7 @@ public interface Multiset<E> extends Collection<E> {
    * @throws IllegalArgumentException if {@code occurrences} is negative
    */
   @CanIgnoreReturnValue
-  int remove(@Nullable @CompatibleWith("E") Object element, int occurrences);
+  int remove(@PolyNonEmpty Multiset<E> this, @Nullable @CompatibleWith("E") Object element, int occurrences);
 
   /**
    * Adds or removes the necessary occurrences of an element such that the
@@ -172,7 +174,7 @@ public interface Multiset<E> extends Collection<E> {
    *     count} is zero, the implementor may optionally return zero instead.
    */
   @CanIgnoreReturnValue
-  int setCount(E element, int count);
+  int setCount(@PolyNonEmpty Multiset<E> this, E element, int count);
 
   /**
    * Conditionally sets the count of an element to a new value, as described in
@@ -195,7 +197,7 @@ public interface Multiset<E> extends Collection<E> {
    *     optionally return {@code true} instead.
    */
   @CanIgnoreReturnValue
-  boolean setCount(E element, int oldCount, int newCount);
+  boolean setCount(@PolyNonEmpty Multiset<E> this, E element, int oldCount, int newCount);
 
   // Views
 
@@ -215,7 +217,7 @@ public interface Multiset<E> extends Collection<E> {
    *
    * @return a view of the set of distinct elements in this multiset
    */
-  Set<E> elementSet();
+  @PolyNonEmpty Set<E> elementSet(@PolyNonEmpty Multiset<E> this);
 
   /**
    * Returns a view of the contents of this multiset, grouped into {@code
@@ -236,7 +238,7 @@ public interface Multiset<E> extends Collection<E> {
    *
    * @return a set of entries representing the data of this multiset
    */
-  Set<Entry<E>> entrySet();
+  @PolyNonEmpty Set<Entry<E>> entrySet(@PolyNonEmpty Multiset<E> this);
 
   /**
    * An unmodifiable element-count pair for a multiset. The {@link
@@ -330,7 +332,7 @@ public interface Multiset<E> extends Collection<E> {
    */
   @Override
   // TODO(kevinb): caveats about equivalence-relation?
-  boolean equals(@Nullable Object object);
+  boolean equals(@PolyNonEmpty Multiset<E> this, @Nullable Object object);
 
   /**
    * Returns the hash code for this multiset. This is defined as the sum of
@@ -342,7 +344,7 @@ public interface Multiset<E> extends Collection<E> {
    * its entry set always have the same hash code.
    */
   @Override
-  int hashCode();
+  int hashCode(@PolyNonEmpty Multiset<E> this);
 
   /**
    * {@inheritDoc}
@@ -352,7 +354,7 @@ public interface Multiset<E> extends Collection<E> {
    * result such as {@code [a x 3, c, d x 2, e]}.
    */
   @Override
-  String toString();
+  @PolyNonEmpty String toString(@PolyNonEmpty Multiset<E> this);
 
   // Refined Collection Methods
 
@@ -363,7 +365,7 @@ public interface Multiset<E> extends Collection<E> {
    * multiple times in this iterator, though not necessarily sequentially.
    */
   @Override
-  Iterator<E> iterator();
+  Iterator<E>   iterator();
 
   /**
    * Determines whether this multiset contains the specified element.
@@ -459,7 +461,7 @@ public interface Multiset<E> extends Collection<E> {
    */
   @CanIgnoreReturnValue
   @Override
-  boolean removeAll(Collection<?> c);
+  boolean removeAll(@PolyNonEmpty Collection<?> c);
 
   /**
    * {@inheritDoc}

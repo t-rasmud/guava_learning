@@ -28,6 +28,8 @@ import java.util.Set;
 import java.util.function.BiConsumer;
 import javax.annotation.Nullable;
 
+import org.checkerframework.checker.nonempty.qual.PolyNonEmpty;
+
 /**
  * A collection that maps keys to values, similar to {@link Map}, but in which
  * each key may be associated with <i>multiple</i> values. You can visualize the
@@ -175,31 +177,31 @@ public interface Multimap<K, V> {
    * {@code asMap().size()}. See the opening section of the {@link Multimap}
    * class documentation for clarification.
    */
-  int size();
+  int size(@PolyNonEmpty Multimap<K,V> this);
 
   /**
    * Returns {@code true} if this multimap contains no key-value pairs.
    * Equivalent to {@code size() == 0}, but can in some cases be more efficient.
    */
-  boolean isEmpty();
+  boolean isEmpty(@PolyNonEmpty Multimap<K,V> this);
 
   /**
    * Returns {@code true} if this multimap contains at least one key-value pair
    * with the key {@code key}.
    */
-  boolean containsKey(@CompatibleWith("K") @Nullable Object key);
+  boolean containsKey(@PolyNonEmpty Multimap<K,V> this, @CompatibleWith("K") @Nullable Object key);
 
   /**
    * Returns {@code true} if this multimap contains at least one key-value pair
    * with the value {@code value}.
    */
-  boolean containsValue(@CompatibleWith("V") @Nullable Object value);
+  boolean containsValue(@PolyNonEmpty Multimap<K,V> this, @CompatibleWith("V") @Nullable Object value);
 
   /**
    * Returns {@code true} if this multimap contains at least one key-value pair
    * with the key {@code key} and the value {@code value}.
    */
-  boolean containsEntry(
+  boolean containsEntry(@PolyNonEmpty Multimap<K,V> this,
       @CompatibleWith("K") @Nullable Object key,
       @CompatibleWith("V") @Nullable Object value);
 
@@ -218,7 +220,7 @@ public interface Multimap<K, V> {
    *     doesn't allow duplicates
    */
   @CanIgnoreReturnValue
-  boolean put(@Nullable K key, @Nullable V value);
+  boolean put(@PolyNonEmpty Multimap<K,V> this, @Nullable K key, @Nullable V value);
 
   /**
    * Removes a single key-value pair with the key {@code key} and the value
@@ -229,7 +231,7 @@ public interface Multimap<K, V> {
    * @return {@code true} if the multimap changed
    */
   @CanIgnoreReturnValue
-  boolean remove(
+  boolean remove(@PolyNonEmpty Multimap<K,V> this,
       @CompatibleWith("K") @Nullable Object key,
       @CompatibleWith("V") @Nullable Object value);
 
@@ -249,7 +251,7 @@ public interface Multimap<K, V> {
    * @return {@code true} if the multimap changed
    */
   @CanIgnoreReturnValue
-  boolean putAll(@Nullable K key, Iterable<? extends V> values);
+  boolean putAll(@PolyNonEmpty Multimap<K,V> this, @Nullable K key, Iterable<? extends V> values);
 
   /**
    * Stores all key-value pairs of {@code multimap} in this multimap, in the
@@ -258,7 +260,7 @@ public interface Multimap<K, V> {
    * @return {@code true} if the multimap changed
    */
   @CanIgnoreReturnValue
-  boolean putAll(Multimap<? extends K, ? extends V> multimap);
+  boolean putAll(@PolyNonEmpty Multimap<K,V> this, Multimap<? extends K, ? extends V> multimap);
 
   /**
    * Stores a collection of values with the same key, replacing any existing
@@ -273,7 +275,7 @@ public interface Multimap<K, V> {
    *     multimap.
    */
   @CanIgnoreReturnValue
-  Collection<V> replaceValues(@Nullable K key, Iterable<? extends V> values);
+  @PolyNonEmpty Collection<V> replaceValues(@PolyNonEmpty Multimap<K,V> this, @Nullable K key, Iterable<? extends V> values);
 
   /**
    * Removes all values associated with the key {@code key}.
@@ -287,13 +289,13 @@ public interface Multimap<K, V> {
    *     effect on the multimap.
    */
   @CanIgnoreReturnValue
-  Collection<V> removeAll(@CompatibleWith("K") @Nullable Object key);
+  @PolyNonEmpty Collection<V> removeAll(@PolyNonEmpty Multimap<K,V> this, @CompatibleWith("K") @Nullable Object key);
 
   /**
    * Removes all key-value pairs from the multimap, leaving it {@linkplain
    * #isEmpty empty}.
    */
-  void clear();
+  void clear(@PolyNonEmpty Multimap<K,V> this);
 
   // Views
 
@@ -305,7 +307,7 @@ public interface Multimap<K, V> {
    * <p>Changes to the returned collection will update the underlying multimap,
    * and vice versa.
    */
-  Collection<V> get(@Nullable K key);
+  @PolyNonEmpty Collection<V> get(@PolyNonEmpty Multimap<K,V> this, @Nullable K key);
 
   /**
    * Returns a view collection of all <i>distinct</i> keys contained in this
@@ -315,7 +317,7 @@ public interface Multimap<K, V> {
    * <p>Changes to the returned set will update the underlying multimap, and
    * vice versa. However, <i>adding</i> to the returned set is not possible.
    */
-  Set<K> keySet();
+  @PolyNonEmpty Set<K> keySet(@PolyNonEmpty Multimap<K,V> this);
 
   /**
    * Returns a view collection containing the key from each key-value pair in
@@ -327,7 +329,7 @@ public interface Multimap<K, V> {
    * and vice versa. However, <i>adding</i> to the returned collection is not
    * possible.
    */
-  Multiset<K> keys();
+  @PolyNonEmpty Multiset<K> keys(@PolyNonEmpty Multimap<K,V> this);
 
   /**
    * Returns a view collection containing the <i>value</i> from each key-value
@@ -338,7 +340,7 @@ public interface Multimap<K, V> {
    * and vice versa. However, <i>adding</i> to the returned collection is not
    * possible.
    */
-  Collection<V> values();
+  @PolyNonEmpty Collection<V> values(@PolyNonEmpty Multimap<K,V> this);
 
   /**
    * Returns a view collection of all key-value pairs contained in this
@@ -348,7 +350,7 @@ public interface Multimap<K, V> {
    * update the underlying multimap, and vice versa. However, <i>adding</i> to
    * the returned collection is not possible.
    */
-  Collection<Map.Entry<K, V>> entries();
+  @PolyNonEmpty Collection<Map.Entry<K, V>> entries(@PolyNonEmpty Multimap<K,V> this);
 
   /**
    * Performs the given action for all key-value pairs contained in this multimap. If an ordering is
@@ -360,7 +362,7 @@ public interface Multimap<K, V> {
    *
    * @since 21.0
    */
-  default void forEach(BiConsumer<? super K, ? super V> action) {
+  default void forEach(@PolyNonEmpty Multimap<K,V> this, BiConsumer<? super K, ? super V> action) {
     checkNotNull(action);
     entries().forEach(entry -> action.accept(entry.getKey(), entry.getValue()));
   }
@@ -377,7 +379,7 @@ public interface Multimap<K, V> {
    * support {@code put} or {@code putAll}, nor do its entries support {@link
    * Map.Entry#setValue setValue}.
    */
-  Map<K, Collection<V>> asMap();
+  @PolyNonEmpty Map<K, Collection<V>> asMap(@PolyNonEmpty Multimap<K,V> this);
 
   // Comparison and hashing
 
@@ -398,7 +400,7 @@ public interface Multimap<K, V> {
    * they both have empty {@link #asMap} views.
    */
   @Override
-  boolean equals(@Nullable Object obj);
+  boolean equals(@Nullable @PolyNonEmpty Object obj);
 
   /**
    * Returns the hash code for this multimap.

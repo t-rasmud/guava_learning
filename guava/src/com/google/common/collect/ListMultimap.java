@@ -23,6 +23,8 @@ import java.util.List;
 import java.util.Map;
 import javax.annotation.Nullable;
 
+import org.checkerframework.checker.nonempty.qual.PolyNonEmpty;
+
 /**
  * A {@code Multimap} that can hold duplicate key-value pairs and that maintains
  * the insertion ordering of values for a given key. See the {@link Multimap}
@@ -49,7 +51,7 @@ public interface ListMultimap<K, V> extends Multimap<K, V> {
    * {@link java.util.Collection} specified in the {@link Multimap} interface.
    */
   @Override
-  List<V> get(@Nullable K key);
+  @PolyNonEmpty List<V> get(@PolyNonEmpty ListMultimap<K,V> this, @Nullable K key);
 
   /**
    * {@inheritDoc}
@@ -60,7 +62,7 @@ public interface ListMultimap<K, V> extends Multimap<K, V> {
    */
   @CanIgnoreReturnValue
   @Override
-  List<V> removeAll(@Nullable Object key);
+  @PolyNonEmpty List<V> removeAll(@PolyNonEmpty ListMultimap<K,V> this, @Nullable Object key);
 
   /**
    * {@inheritDoc}
@@ -71,7 +73,7 @@ public interface ListMultimap<K, V> extends Multimap<K, V> {
    */
   @CanIgnoreReturnValue
   @Override
-  List<V> replaceValues(K key, Iterable<? extends V> values);
+  @PolyNonEmpty List<V> replaceValues(@PolyNonEmpty ListMultimap<K,V> this, K key, Iterable<? extends V> values);
 
   /**
    * {@inheritDoc}
@@ -82,7 +84,7 @@ public interface ListMultimap<K, V> extends Multimap<K, V> {
    * instead.
    */
   @Override
-  Map<K, Collection<V>> asMap();
+  @PolyNonEmpty Map<K, Collection<V>> asMap(@PolyNonEmpty ListMultimap<K,V> this);
 
   /**
    * Compares the specified object to this multimap for equality.
